@@ -1,0 +1,31 @@
+# hermes-link
+
+## Dependencies
+node_modules/
+.env
+.env.local
+
+## Build outputs
+dist/
+build/
+*.pyc
+__pycache__/
+
+## IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Temporary
+*.tmp
+*.log
+temp/
+
+## Git
+# Already handled by repo but good to have
+*.orig

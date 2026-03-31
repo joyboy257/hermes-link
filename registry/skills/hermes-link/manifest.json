@@ -1,0 +1,22 @@
+{
+  "id": "hermes-link",
+  "name": "Hermes Link",
+  "description": "Browse, install, and manage Hermes Agent skills from the marketplace.",
+  "version": "1.0.0",
+  "author": {
+    "name": "hermes-link",
+    "url": "https://github.com/joyboy257/hermes-link"
+  },
+  "repository": "https://github.com/joyboy257/hermes-link",
+  "tags": ["marketplace", "skills", "discovery", "install"],
+  "category": "productivity",
+  "hermes_version": ">=0.4.0",
+  "platforms": ["linux", "macos", "win32"],
+  "prerequisites": {
+    "env_vars": []
+  },
+  "pricing": {
+    "type": "free",
+    "license": "MIT"
+  }
+}
