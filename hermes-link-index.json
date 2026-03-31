@@ -7,7 +7,12 @@
       "name": "xitter",
       "description": "Interact with X/Twitter via the x-cli terminal client using official X API credentials. Use for posting, reading timelines, searching tweets, liking, retweeting, bookmarks, mentions, and user lookups.",
       "category": "social-media",
-      "tags": ["twitter", "x", "social-media", "x-cli"],
+      "tags": [
+        "twitter",
+        "x",
+        "social-media",
+        "x-cli"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "uv tool install git+https://github.com/Infatoshi/x-cli.git",
@@ -17,7 +22,13 @@
       "name": "openhue",
       "description": "Control Philips Hue lights, rooms, and scenes via the OpenHue CLI. Turn lights on/off, adjust brightness, color, color temperature, and activate scenes.",
       "category": "smart-home",
-      "tags": ["Smart-Home", "Hue", "Lights", "IoT", "Automation"],
+      "tags": [
+        "Smart-Home",
+        "Hue",
+        "Lights",
+        "IoT",
+        "Automation"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "curl -sL https://github.com/openhue/openhue-cli/releases/latest/download/openhue-linux-amd64 -o ~/.local/bin/openhue && chmod +x ~/.local/bin/openhue",
@@ -25,9 +36,16 @@
     },
     {
       "name": "pokemon-player",
-      "description": "Play Pokemon games autonomously via headless emulation. Starts a game server, reads structured game state from RAM, makes strategic decisions, and sends button inputs — all from the terminal.",
+      "description": "Play Pokemon games autonomously via headless emulation. Starts a game server, reads structured game state from RAM, makes strategic decisions, and sends button inputs \u2014 all from the terminal.",
       "category": "gaming",
-      "tags": ["gaming", "pokemon", "emulator", "pyboy", "gameplay", "gameboy"],
+      "tags": [
+        "gaming",
+        "pokemon",
+        "emulator",
+        "pyboy",
+        "gameplay",
+        "gameboy"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "git clone https://github.com/NousResearch/pokemon-agent.git && cd pokemon-agent && uv venv && uv pip install -e '.[pyboy]'",
@@ -37,7 +55,14 @@
       "name": "find-nearby",
       "description": "Find nearby places (restaurants, cafes, bars, pharmacies, etc.) using OpenStreetMap. Works with coordinates, addresses, cities, zip codes, or Telegram location pins. No API keys needed.",
       "category": "leisure",
-      "tags": ["location", "maps", "nearby", "places", "restaurants", "local"],
+      "tags": [
+        "location",
+        "maps",
+        "nearby",
+        "places",
+        "restaurants",
+        "local"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "python3 ~/.hermes/skills/leisure/find-nearby/scripts/find_nearby.py",
@@ -47,7 +72,12 @@
       "name": "obsidian",
       "description": "Read, search, and create notes in the Obsidian vault.",
       "category": "note-taking",
-      "tags": ["Obsidian", "Notes", "Vault", "Productivity"],
+      "tags": [
+        "Obsidian",
+        "Notes",
+        "Vault",
+        "Productivity"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "Set OBSIDIAN_VAULT_PATH in ~/.hermes/.env",
@@ -57,7 +87,13 @@
       "name": "himalaya",
       "description": "CLI to manage emails via IMAP/SMTP. Use himalaya to list, read, write, reply, forward, search, and organize emails from the terminal. Supports multiple accounts and message composition with MML (MIME Meta Language).",
       "category": "email",
-      "tags": ["Email", "IMAP", "SMTP", "CLI", "Communication"],
+      "tags": [
+        "Email",
+        "IMAP",
+        "SMTP",
+        "CLI",
+        "Communication"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "curl -sSL https://raw.githubusercontent.com/pimalaya/himalaya/master/install.sh | PREFIX=~/.local sh",
@@ -67,7 +103,13 @@
       "name": "notion",
       "description": "Notion API for creating and managing pages, databases, and blocks via curl. Search, create, update, and query Notion workspaces directly from the terminal.",
       "category": "productivity",
-      "tags": ["Notion", "Productivity", "Notes", "Database", "API"],
+      "tags": [
+        "Notion",
+        "Productivity",
+        "Notes",
+        "Database",
+        "API"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "Set NOTION_API_KEY in ~/.hermes/.env",
@@ -77,7 +119,14 @@
       "name": "stable-diffusion-image-generation",
       "description": "State-of-the-art text-to-image generation with Stable Diffusion models via HuggingFace Diffusers. Use when generating images from text prompts, performing image-to-image translation, inpainting, or building custom diffusion pipelines.",
       "category": "data-science",
-      "tags": ["Image Generation", "Stable Diffusion", "Diffusers", "Text-to-Image", "Multimodal", "Computer Vision"],
+      "tags": [
+        "Image Generation",
+        "Stable Diffusion",
+        "Diffusers",
+        "Text-to-Image",
+        "Multimodal",
+        "Computer Vision"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "pip install diffusers transformers accelerate torch",
@@ -87,7 +136,18 @@
       "name": "whisper",
       "description": "OpenAI's general-purpose speech recognition model. Supports 99 languages, transcription, translation to English, and language identification. Six model sizes from tiny (39M params) to large (1550M params). Use for speech-to-text, podcast transcription, or multilingual audio processing.",
       "category": "data-science",
-      "tags": ["Whisper", "Speech Recognition", "ASR", "Multimodal", "Multilingual", "OpenAI", "Speech-To-Text", "Transcription", "Translation", "Audio Processing"],
+      "tags": [
+        "Whisper",
+        "Speech Recognition",
+        "ASR",
+        "Multimodal",
+        "Multilingual",
+        "OpenAI",
+        "Speech-To-Text",
+        "Transcription",
+        "Translation",
+        "Audio Processing"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "pip install -U openai-whisper",
@@ -97,7 +157,14 @@
       "name": "arxiv",
       "description": "Search and retrieve academic papers from arXiv using their free REST API. No API key needed. Search by keyword, author, category, or ID. Combine with web_extract or the ocr-and-documents skill to read full paper content.",
       "category": "research",
-      "tags": ["Research", "Arxiv", "Papers", "Academic", "Science", "API"],
+      "tags": [
+        "Research",
+        "Arxiv",
+        "Papers",
+        "Academic",
+        "Science",
+        "API"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "python3 ~/.hermes/skills/research/arxiv/scripts/search_arxiv.py",
@@ -107,7 +174,14 @@
       "name": "excalidraw",
       "description": "Create hand-drawn style diagrams using Excalidraw JSON format. Generate .excalidraw files for architecture diagrams, flowcharts, sequence diagrams, concept maps, and more. Files can be opened at excalidraw.com or uploaded for shareable links.",
       "category": "creative",
-      "tags": ["Excalidraw", "Diagrams", "Flowcharts", "Architecture", "Visualization", "JSON"],
+      "tags": [
+        "Excalidraw",
+        "Diagrams",
+        "Flowcharts",
+        "Architecture",
+        "Visualization",
+        "JSON"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "pip install cryptography",
@@ -117,7 +191,13 @@
       "name": "github-code-review",
       "description": "Review code changes by analyzing git diffs, leaving inline comments on PRs, and performing thorough pre-push review. Works with gh CLI or falls back to git + GitHub REST API via curl.",
       "category": "github",
-      "tags": ["GitHub", "Code-Review", "Pull-Requests", "Git", "Quality"],
+      "tags": [
+        "GitHub",
+        "Code-Review",
+        "Pull-Requests",
+        "Git",
+        "Quality"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "gh auth login",
@@ -127,7 +207,13 @@
       "name": "github-issues",
       "description": "Create, manage, triage, and close GitHub issues. Search existing issues, add labels, assign people, and link to PRs. Works with gh CLI or falls back to git + GitHub REST API via curl.",
       "category": "github",
-      "tags": ["GitHub", "Issues", "Project-Management", "Bug-Tracking", "Triage"],
+      "tags": [
+        "GitHub",
+        "Issues",
+        "Project-Management",
+        "Bug-Tracking",
+        "Triage"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "gh auth login",
@@ -137,7 +223,17 @@
       "name": "serving-llms-vllm",
       "description": "Serves LLMs with high throughput using vLLM's PagedAttention and continuous batching. Use when deploying production LLM APIs, optimizing inference latency/throughput, or serving models with limited GPU memory. Supports OpenAI-compatible endpoints, quantization (GPTQ/AWQ/FP8), and tensor parallelism.",
       "category": "mlops",
-      "tags": ["vLLM", "Inference Serving", "PagedAttention", "Continuous Batching", "High Throughput", "Production", "OpenAI API", "Quantization", "Tensor Parallelism"],
+      "tags": [
+        "vLLM",
+        "Inference Serving",
+        "PagedAttention",
+        "Continuous Batching",
+        "High Throughput",
+        "Production",
+        "OpenAI API",
+        "Quantization",
+        "Tensor Parallelism"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "pip install vllm",
@@ -147,7 +243,17 @@
       "name": "peft-fine-tuning",
       "description": "Parameter-efficient fine-tuning for LLMs using LoRA, QLoRA, and 25+ methods. Use when fine-tuning large models (7B-70B) with limited GPU memory, when you need to train <1% of parameters with minimal accuracy loss, or for multi-adapter serving.",
       "category": "mlops",
-      "tags": ["Fine-Tuning", "PEFT", "LoRA", "QLoRA", "Parameter-Efficient", "Adapters", "Low-Rank", "Memory Optimization", "Multi-Adapter"],
+      "tags": [
+        "Fine-Tuning",
+        "PEFT",
+        "LoRA",
+        "QLoRA",
+        "Parameter-Efficient",
+        "Adapters",
+        "Low-Rank",
+        "Memory Optimization",
+        "Multi-Adapter"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "pip install peft transformers accelerate bitsandbytes datasets",
@@ -157,7 +263,18 @@
       "name": "pinecone",
       "description": "Managed vector database for production AI applications. Fully managed, auto-scaling, with hybrid search (dense + sparse), metadata filtering, and namespaces. Low latency (<100ms p95). Use for production RAG, recommendation systems, or semantic search at scale.",
       "category": "mlops",
-      "tags": ["RAG", "Pinecone", "Vector Database", "Managed Service", "Serverless", "Hybrid Search", "Production", "Auto-Scaling", "Low Latency", "Recommendations"],
+      "tags": [
+        "RAG",
+        "Pinecone",
+        "Vector Database",
+        "Managed Service",
+        "Serverless",
+        "Hybrid Search",
+        "Production",
+        "Auto-Scaling",
+        "Low Latency",
+        "Recommendations"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "pip install pinecone-client",
@@ -165,13 +282,36 @@
     },
     {
       "name": "jupyter-live-kernel",
-      "description": "Use a live Jupyter kernel for stateful, iterative Python execution via hamelnb. Load this skill when the task involves exploration, iteration, or inspecting intermediate results — data science, ML experimentation, API exploration, or building up complex code step-by-step.",
+      "description": "Use a live Jupyter kernel for stateful, iterative Python execution via hamelnb. Load this skill when the task involves exploration, iteration, or inspecting intermediate results \u2014 data science, ML experimentation, API exploration, or building up complex code step-by-step.",
       "category": "data-science",
-      "tags": ["jupyter", "notebook", "repl", "data-science", "exploration", "iterative"],
+      "tags": [
+        "jupyter",
+        "notebook",
+        "repl",
+        "data-science",
+        "exploration",
+        "iterative"
+      ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "git clone https://github.com/hamelsmu/hamelnb.git ~/.agent-skills/hamelnb && uv tool install jupyterlab",
       "skill_md_path": "data-science/jupyter-live-kernel/SKILL.md"
+    },
+    {
+      "name": "hermes-link",
+      "description": "Browse, install, and manage Hermes Agent skills from the hermes-link marketplace. One command to discover, install, and manage capabilities.",
+      "category": "productivity",
+      "tags": [
+        "marketplace",
+        "skills",
+        "discovery",
+        "install",
+        "hermes-link"
+      ],
+      "author": "joyboy257",
+      "source_repo": "github.com/joyboy257/hermes-link",
+      "install_command": "pip install hermes-link",
+      "skill_md_path": "registry/skills/hermes-link/SKILL.md"
     }
   ]
 }

@@ -1,49 +1,59 @@
 # hermes-link
 
-Marketplace infrastructure for Hermes Agent skills.
+Skill marketplace for Hermes Agent — one command to discover, install, and manage capabilities.
 
-## Quick Links
+```
+pip install hermes-link
+```
 
-- [PRD](./docs/PRD.md)
-- [Roadmap](./docs/roadmap.md)
-- [Developer Guide](./docs/developers/submit-skill.md)
-- [User Guide](./docs/users/marketplace.md)
-- [API Reference](./docs/api/README.md)
+```
+hermes-link list                    # Browse all skills
+hermes-link search <query>          # Search by name/tag/description
+hermes-link info <name>             # Full skill details
+hermes-link install <name>          # Install a skill
+hermes-link install <name> --force  # Reinstall
+hermes-link uninstall <name>        # Remove a skill
+hermes-link installed               # List installed skills
+hermes-link update                  # Update all skills
+```
 
-## Project Structure
+## Skills (18 available)
+
+productivity | mlops | research | github | social-media | data-science | creative | gaming | smart-home | email | note-taking | leisure | custom | agentic-ai
+
+Run `hermes-link list` to see all available skills.
+
+## How It Works
+
+hermes-link reads the registry index (`hermes-link-index.json`) which maps each skill to:
+- `skill_md_path` — where the SKILL.md lives in this repo
+- `install_command` — how to install (uv, curl, npm, pip, etc.)
+- Metadata — name, description, category, tags, author
+
+When you `install`, hermes-link either runs the install_command or git sparse-clones the skill path.
+
+## Repository Structure
 
 ```
 hermes-link/
-├── SPEC.md                    # Project specification
-├── README.md                  # This file
+├── hermes-link-index.json    # Master skill registry
+├── hermes_link/             # Python CLI package
+│   ├── cli.py
+│   ├── registry.py
+│   ├── installer.py
+│   └── format.py
+├── registry/skills/          # Skill definitions
+│   ├── hermes-link/
+│   └── notion-basic/
 ├── docs/
-│   ├── PRD.md                 # Product Requirements Document
-│   ├── roadmap.md             # Development roadmap
-│   ├── api/
-│   │   └── README.md          # API reference
-│   ├── architecture/
-│   │   └── adr/               # Architecture Decision Records
-│   ├── developers/
-│   │   └── submit-skill.md    # Developer guide
-│   └── users/
-│       └── marketplace.md     # User guide
-└── (registry/ - coming soon)
+├── SPEC.md
+└── README.md
 ```
+
+## Registry
+
+17+ skills and growing. Contributions welcome — open a PR with a new `hermes-link-index.json` entry and a SKILL.md.
 
 ## Status
 
-**Phase:** MVP Development
-
-Currently building:
-- Registry repository structure
-- JSON manifest schema
-- Hermes CLI integration skill
-
-## Vision
-
-One command to discover, install, and manage Hermes skills — with quality you can trust.
-
-## Related
-
-- [Hermes Agent](https://github.com/NousResearch/hermes-agent)
-- [Hermes Skills](https://github.com/NousResearch/hermes-agent/tree/main/skills)
+MVP complete. CLI is functional. Skills are installable.

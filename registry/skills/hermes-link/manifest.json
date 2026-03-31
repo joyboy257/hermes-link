@@ -1,7 +1,7 @@
 {
   "id": "hermes-link",
-  "name": "Hermes Link",
-  "description": "Browse, install, and manage Hermes Agent skills from the marketplace.",
+  "name": "hermes-link",
+  "description": "Browse, install, and manage Hermes Agent skills from the hermes-link marketplace. One command to discover, install, and manage capabilities.",
   "version": "1.0.0",
   "author": {
     "name": "hermes-link",
@@ -18,5 +18,7 @@
   "pricing": {
     "type": "free",
     "license": "MIT"
-  }
+  },
+  "install_command": "pip install hermes-link",
+  "skill_md_path": "registry/skills/hermes-link/SKILL.md"
 }
