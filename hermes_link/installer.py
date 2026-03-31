@@ -133,6 +133,11 @@ def install(name: str, force: bool = False, dry_run: bool = False) -> tuple[bool
         source = skill.get("source_repo", "")
         if source:
             success, msg = _install_git_sparse(name, source, skill_path, install_path)
+            if not success and "hermes-link" in source:
+                # Fallback for hermes-link repo: use raw.githubusercontent.com (faster)
+                success2, msg2 = _install_raw(name, source, skill_path, install_path)
+                if success2:
+                    success, msg = success2, msg2
         else:
             success, msg = False, "No install_command and no source_repo."
         if not success:
@@ -186,24 +191,32 @@ def _install_git_tool(name: str, cmd: str, install_path: Path) -> tuple[bool, st
 
 
 def _install_curl_script(name: str, cmd: str, install_path: Path) -> tuple[bool, str]:
-    """Download a script via curl and place it."""
-    # Extract URL and destination from curl command
-    # e.g. curl -sL https://... -o ~/.local/bin/openhue
+    """Download a script/binary via curl and make it executable."""
+    # Expand ~ in the command
+    cmd = cmd.replace("~", str(Path.home()))
+
+    # Extract URL
     url_match = re.search(r"https?://[^\s\"']+", cmd)
-    out_match = re.search(r"-o\s+([^\s\"']+)", cmd)
     if not url_match:
         return False, f"Could not parse URL from: {cmd}"
 
     url = url_match.group(0)
-    out_path = Path(out_match.group(1)) if out_match else Path("/tmp") / name
 
-    install_path.parent.mkdir(parents=True, exist_ok=True)
+    # Extract output path
+    out_match = re.search(r"-o\s+([^\s\"']+)", cmd)
+    if out_match:
+        out_path = Path(out_match.group(1))
+    else:
+        out_path = Path("/tmp") / name
 
-    code, _, stderr = _sh(f"curl -sL {url} -o {out_path}")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    code, _, stderr = _sh(f"curl -sL {url} -o {out_path} --max-time 30")
     if code != 0:
         return False, f"Download failed: {stderr}"
 
-    out_path.chmod(0o755)
+    if out_path.exists():
+        out_path.chmod(0o755)
     return True, f"Downloaded to {out_path}"
 
 
@@ -222,6 +235,37 @@ def _install_tool(name: str, cmd: str, install_path: Path) -> tuple[bool, str]:
             return True, stdout2.strip() or f"Installed {name} (--break-system-packages)"
         return False, f"Install failed: {stderr or stdout}"
     return True, stdout.strip() or f"Installed {name}"
+
+
+def _install_raw(name: str, source_repo: str, skill_path: str, install_path: Path) -> tuple[bool, str]:
+    """Download skill files directly from raw.githubusercontent.com (no git clone)."""
+    # Normalize repo to raw URL
+    # github.com/owner/repo → https://raw.githubusercontent.com/owner/repo/main/<path>
+    if source_repo.startswith("github.com/"):
+        repo = source_repo.replace("github.com/", "")
+        raw_base = f"https://raw.githubusercontent.com/{repo}"
+    else:
+        return False, f"Cannot construct raw URL from: {source_repo}"
+
+    install_path.parent.mkdir(parents=True, exist_ok=True)
+
+    files = [
+        ("SKILL.md", f"{raw_base}/main/{skill_path}"),
+        ("manifest.json", f"{raw_base}/main/{skill_path.rsplit('/', 1)[0]}/manifest.json"),
+    ]
+
+    success_files = []
+    for fname, url in files:
+        out_path = install_path.parent / fname
+        code, _, stderr = _sh(f"curl -sL {url} -o {out_path} --max-time 15")
+        if code == 0 and out_path.exists() and out_path.stat().st_size > 0:
+            success_files.append(fname)
+        else:
+            pass  # non-critical if missing
+
+    if success_files:
+        return True, f"Downloaded {', '.join(success_files)} from raw GitHub"
+    return False, "Could not download files from GitHub"
 
 
 def _install_git_sparse(name: str, source_repo: str, skill_path: str, install_path: Path) -> tuple[bool, str]:
