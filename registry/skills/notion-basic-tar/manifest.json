@@ -1,0 +1,22 @@
+{
+  "id": "notion-basic",
+  "name": "Notion Basic",
+  "description": "Basic Notion API integration for creating and managing pages.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Hermes Community",
+    "url": "https://github.com/NousResearch/hermes-agent"
+  },
+  "repository": "https://github.com/joyboy257/hermes-link",
+  "tags": ["notion", "productivity", "api"],
+  "category": "productivity",
+  "hermes_version": ">=0.4.0",
+  "platforms": ["linux", "macos", "win32"],
+  "prerequisites": {
+    "env_vars": ["NOTION_API_KEY"]
+  },
+  "pricing": {
+    "type": "free",
+    "license": "MIT"
+  }
+}

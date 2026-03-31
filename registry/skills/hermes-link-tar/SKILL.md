@@ -24,24 +24,11 @@ The official client for the hermes-link skill marketplace. Browse and install sk
 mkdir -p ~/.hermes/skills/productivity
 cd ~/.hermes/skills/productivity
 
-# Clone just the hermes-link folder from the repo
-git clone --depth 1 --filter=blob:none --sparse https://github.com/joyboy257/hermes-link.git temp-repo
-cd temp-repo
-mv registry/skills/hermes-link ~/.hermes/skills/productivity/
-cd ..
-rm -rf temp-repo
-```
+# Download and extract the skill
+curl -sL "https://raw.githubusercontent.com/joyboy257/hermes-link/main/registry/skills/hermes-link-1.0.0.tar.gz" | tar -xz
 
-Or manually:
-```bash
-# Create folder
-mkdir -p ~/.hermes/skills/productivity/hermes-link
-
-# Download SKILL.md
-curl -sL "https://raw.githubusercontent.com/joyboy257/hermes-link/main/registry/skills/hermes-link/SKILL.md" -o ~/.hermes/skills/productivity/hermes-link/SKILL.md
-
-# Download manifest
-curl -sL "https://raw.githubusercontent.com/joyboy257/hermes-link/main/registry/skills/hermes-link/manifest.json" -o ~/.hermes/skills/productivity/hermes-link/manifest.json
+# Or clone the entire skills directory
+curl -sL "https://raw.githubusercontent.com/joyboy257/hermes-link/main/registry/skills/index.json" -o index.json
 ```
 
 ### Install Any Skill
@@ -49,19 +36,17 @@ curl -sL "https://raw.githubusercontent.com/joyboy257/hermes-link/main/registry/
 ```bash
 # Replace SKILL_ID with the skill you want (e.g., notion-basic)
 SKILL_ID="notion-basic"
+SKILLS_DIR="$HOME/.hermes/skills"
 
-mkdir -p ~/.hermes/skills
-cd ~/.hermes/skills
+mkdir -p "$SKILLS_DIR"
+cd "$SKILLS_DIR"
 
-# Clone just the specific skill folder
-git clone --depth 1 --filter=blob:none --sparse https://github.com/joyboy257/hermes-link.git temp-repo
-cd temp-repo
-mv registry/skills/$SKILL_ID ~/.hermes/skills/
-cd ..
-rm -rf temp-repo
+# Download and extract
+curl -sL "https://raw.githubusercontent.com/joyboy257/hermes-link/main/registry/skills/${SKILL_ID}-1.0.0.tar.gz" | tar -xz
 
-if [ -f "~/.hermes/skills/$SKILL_ID/SKILL.md" ]; then
+if [ -f "$SKILLS_DIR/$SKILL_ID/SKILL.md" ]; then
     echo "✓ Installed $SKILL_ID"
+    echo "  Skills directory: $SKILLS_DIR/$SKILL_ID"
 else
     echo "✗ Install failed for $SKILL_ID"
 fi
