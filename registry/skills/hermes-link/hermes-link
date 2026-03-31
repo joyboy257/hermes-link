@@ -25,22 +25,9 @@ print_red() { echo -e "${RED}$1${NC}"; }
 print_yellow() { echo -e "${YELLOW}$1${NC}"; }
 print_blue() { echo -e "${BLUE}$1${NC}"; }
 
-# Fetch index (cached) - use gh api for authenticated requests to private repos
+# Fetch index - always fresh for now
 get_index() {
-    local cache_file="/tmp/hermes-link-index.json"
-    local max_age=300  # 5 minutes
-    
-    if [ -f "$cache_file" ]; then
-        local file_age=$(($(date +%s) - $(stat -c %Y "$cache_file" 2>/dev/null || echo "0")))
-        if [ "$file_age" -lt "$max_age" ]; then
-            cat "$cache_file"
-            return
-        fi
-    fi
-    
-    # Use gh api for authenticated access to private repos
-    gh api repos/joyboy257/hermes-link/contents/registry/skills/index.json --jq '.content' 2>/dev/null | base64 -d > "$cache_file" 2>/dev/null || echo "[]"
-    cat "$cache_file"
+    gh api repos/joyboy257/hermes-link/contents/registry/skills/index.json --jq '.content' 2>/dev/null | base64 -d || echo "[]"
 }
 
 # List all skills
