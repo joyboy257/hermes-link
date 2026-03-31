@@ -1,0 +1,310 @@
+#!/bin/bash
+# hermes-link marketplace commands
+# Usage: hermes-link [command] [args]
+
+set -e
+
+# For private repos, raw.githubusercontent.com doesn't work
+# Use GitHub API instead
+API_BASE="https://api.github.com/repos/joyboy257/hermes-link/contents/registry/skills"
+INDEX_URL="$API_BASE/index.json"
+SKILLS_DIR="$HOME/.hermes/skills"
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+command -v curl >/dev/null 2>&1 || { echo "curl required but not installed. Aborting." >&2; exit 1; }
+
+# Function to print colored output
+print_green() { echo -e "${GREEN}$1${NC}"; }
+print_red() { echo -e "${RED}$1${NC}"; }
+print_yellow() { echo -e "${YELLOW}$1${NC}"; }
+print_blue() { echo -e "${BLUE}$1${NC}"; }
+
+# Fetch index (cached) - use gh api for authenticated requests to private repos
+get_index() {
+    local cache_file="/tmp/hermes-link-index.json"
+    local max_age=300  # 5 minutes
+    
+    if [ -f "$cache_file" ]; then
+        local file_age=$(($(date +%s) - $(stat -c %Y "$cache_file" 2>/dev/null || echo "0")))
+        if [ "$file_age" -lt "$max_age" ]; then
+            cat "$cache_file"
+            return
+        fi
+    fi
+    
+    # Use gh api for authenticated access to private repos
+    gh api repos/joyboy257/hermes-link/contents/registry/skills/index.json --jq '.content' 2>/dev/null | base64 -d > "$cache_file" 2>/dev/null || echo "[]"
+    cat "$cache_file"
+}
+
+# List all skills
+cmd_list() {
+    print_blue "=== hermes-link Marketplace ==="
+    echo ""
+    
+    local index=$(get_index)
+    echo "$index" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+print(f'Total skills: {len(data)}')
+print('')
+for s in sorted(data, key=lambda x: x.get('name', '')):
+    rating = s.get('rating', 0)
+    stars = '★' * int(rating) if rating else '☆'
+    print(f\"  {s['id']:25} [{s['category']:15}] {stars} {rating or ''}\")
+" 2>/dev/null || print_red "Failed to fetch skills"
+}
+
+# Search skills
+cmd_search() {
+    local query="$1"
+    
+    if [ -z "$query" ]; then
+        print_yellow "Usage: hermes-link search <query>"
+        exit 1
+    fi
+    
+    print_blue "=== Search: $query ==="
+    echo ""
+    
+    local index=$(get_index)
+    echo "$index" | python3 -c "
+import json, sys, os
+query = '$query'.lower()
+data = json.load(sys.stdin)
+results = [s for s in data if query in s.get('name','').lower() or query in s.get('description','').lower() or query in ' '.join(s.get('tags',[])).lower()]
+if results:
+    print(f'Found {len(results)} skills:')
+    print('')
+    for s in results:
+        print(f\"  {s['id']}\")
+        print(f\"    {s['description'][:70]}...\")
+        print(f\"    Category: {s['category']} | Rating: {s.get('rating', 'N/A')} | Downloads: {s.get('downloads', 0)}\")
+        print('')
+else:
+    print('No skills found matching \"$query\"')
+" 2>/dev/null || print_red "Search failed"
+}
+
+# Install a skill
+cmd_install() {
+    local skill_id="$1"
+    
+    if [ -z "$skill_id" ]; then
+        print_yellow "Usage: hermes-link install <skill-id>"
+        echo ""
+        echo "Available skills:"
+        cmd_list
+        exit 1
+    fi
+    
+    print_blue "Installing: $skill_id"
+    echo ""
+    
+    # Check if already installed
+    if [ -d "$SKILLS_DIR/$skill_id" ]; then
+        print_yellow "Skill already installed: $skill_id"
+        exit 0
+    fi
+    
+    # Verify skill exists in registry
+    local index=$(get_index)
+    local exists=$(echo "$index" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+skills = [s['id'] for s in data]
+print('yes' if '$skill_id' in skills else 'no')
+" 2>/dev/null)
+    
+    if [ "$exists" != "yes" ]; then
+        print_red "Skill not found in registry: $skill_id"
+        print_yellow "Run 'hermes-link list' to see available skills"
+        exit 1
+    fi
+    
+    # Create skills directory
+    mkdir -p "$SKILLS_DIR"
+    
+    # Install using git sparse-clone
+    print_green "Cloning skill repository..."
+    cd "$SKILLS_DIR"
+    
+    if git clone --depth 1 --filter=blob:none --sparse https://github.com/joyboy257/hermes-link.git temp-hermes-link 2>/dev/null; then
+        cd temp-hermes-link
+        if mv "registry/skills/$skill_id" "$SKILLS_DIR/" 2>/dev/null; then
+            cd ..
+            rm -rf temp-hermes-link
+            print_green "✓ Installed: $skill_id"
+            echo "  Location: $SKILLS_DIR/$skill_id/"
+            echo "  Run 'ls $SKILLS_DIR/$skill_id/' to see files"
+        else
+            cd ..
+            rm -rf temp-hermes-link
+            print_red "✗ Failed to move skill files"
+            exit 1
+        fi
+    else
+        print_red "✗ Failed to clone repository"
+        exit 1
+    fi
+}
+
+# Uninstall a skill
+cmd_uninstall() {
+    local skill_id="$1"
+    
+    if [ -z "$skill_id" ]; then
+        print_yellow "Usage: hermes-link uninstall <skill-id>"
+        exit 1
+    fi
+    
+    if [ ! -d "$SKILLS_DIR/$skill_id" ]; then
+        print_red "Skill not installed: $skill_id"
+        exit 1
+    fi
+    
+    rm -rf "$SKILLS_DIR/$skill_id"
+    print_green "✓ Uninstalled: $skill_id"
+}
+
+# Show installed skills
+cmd_installed() {
+    print_blue "=== Installed Skills ==="
+    echo ""
+    
+    if [ ! -d "$SKILLS_DIR" ]; then
+        print_yellow "No skills installed yet"
+        return
+    fi
+    
+    local count=0
+    for dir in "$SKILLS_DIR"/*/; do
+        if [ -d "$dir" ]; then
+            local name=$(basename "$dir")
+            local has_skill=$(ls "$dir/SKILL.md" 2>/dev/null && echo "yes" || echo "no")
+            if [ "$has_skill" = "yes" ]; then
+                echo "  $name"
+                count=$((count + 1))
+            fi
+        fi
+    done
+    
+    if [ "$count" -eq 0 ]; then
+        print_yellow "No skills installed"
+    else
+        echo ""
+        print_green "Total: $count skill(s) installed"
+    fi
+}
+
+# Show skill info
+cmd_info() {
+    local skill_id="$1"
+    
+    if [ -z "$skill_id" ]; then
+        print_yellow "Usage: hermes-link info <skill-id>"
+        exit 1
+    fi
+    
+    # Use gh api to fetch manifest for private repo
+    gh api "repos/joyboy257/hermes-link/contents/registry/skills/$skill_id/manifest.json" --jq '.content' 2>/dev/null | base64 -d | python3 -m json.tool 2>/dev/null || print_red "Skill not found: $skill_id"
+}
+
+# Update skills
+cmd_update() {
+    print_blue "=== Update Installed Skills ==="
+    echo ""
+    
+    if [ ! -d "$SKILLS_DIR" ]; then
+        print_yellow "No skills installed"
+        return
+    fi
+    
+    local index=$(get_index)
+    local count=0
+    
+    for dir in "$SKILLS_DIR"/*/; do
+        if [ -d "$dir" ]; then
+            local name=$(basename "$dir")
+            local has_skill=$(ls "$dir/SKILL.md" 2>/dev/null && echo "yes" || echo "no")
+            
+            if [ "$has_skill" = "yes" ]; then
+                # Check if skill exists in registry
+                local exists=$(echo "$index" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+print('yes' if any(s['id'] == '$name' for s in data) else 'no')
+" 2>/dev/null)
+                
+                if [ "$exists" = "yes" ]; then
+                    echo "  $name: up to date"
+                    count=$((count + 1))
+                else
+                    echo "  $name: not in registry (may need reinstall)"
+                fi
+            fi
+        fi
+    done
+    
+    echo ""
+    print_green "Checked $count skills"
+    echo "To update, uninstall and reinstall: hermes-link uninstall <id> && hermes-link install <id>"
+}
+
+# Main command dispatcher
+case "$1" in
+    list)
+        cmd_list
+        ;;
+    search)
+        cmd_search "$2"
+        ;;
+    install)
+        cmd_install "$2"
+        ;;
+    uninstall|remove)
+        cmd_uninstall "$2"
+        ;;
+    installed|ls)
+        cmd_installed
+        ;;
+    info)
+        cmd_info "$2"
+        ;;
+    update)
+        cmd_update
+        ;;
+    help|--help|-h)
+        echo "hermes-link - Hermes Skill Marketplace"
+        echo ""
+        echo "Commands:"
+        echo "  list                - List all available skills"
+        echo "  search <query>      - Search skills by name/tag"
+        echo "  install <id>       - Install a skill"
+        echo "  uninstall <id>     - Uninstall a skill"
+        echo "  installed          - List installed skills"
+        echo "  info <id>           - Show skill details"
+        echo "  update              - Check for updates"
+        echo "  help                - Show this help"
+        echo ""
+        echo "Examples:"
+        echo "  hermes-link list"
+        echo "  hermes-link search notion"
+        echo "  hermes-link install notion-basic"
+        ;;
+    *)
+        if [ -z "$1" ]; then
+            cmd_list
+        else
+            print_red "Unknown command: $1"
+            echo "Run 'hermes-link help' for usage"
+            exit 1
+        fi
+        ;;
+esac

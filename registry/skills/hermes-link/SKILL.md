@@ -1,7 +1,7 @@
 ---
 name: hermes-link
 description: Browse, install, and manage Hermes Agent skills from the hermes-link marketplace. Search, discover, and install quality skills with one command.
-version: 1.0.0
+version: 1.0.1
 author: hermes-link
 license: MIT
 metadata:
