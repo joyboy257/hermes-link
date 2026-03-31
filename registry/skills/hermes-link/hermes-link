@@ -244,6 +244,63 @@ print('yes' if any(s['id'] == '$name' for s in data) else 'no')
     echo "To update, uninstall and reinstall: hermes-link uninstall <id> && hermes-link install <id>"
 }
 
+# Run a skill task
+cmd_run() {
+    local skill_id="$1"
+    local task="$2"
+    
+    if [ -z "$skill_id" ] || [ -z "$task" ]; then
+        print_yellow "Usage: hermes-link run <skill-id> <task>"
+        echo ""
+        echo "Run a task defined in an installed skill."
+        echo ""
+        echo "Examples:"
+        echo "  hermes-link run notion-basic search --query 'my page'"
+        echo "  hermes-link run arxiv-research search --query 'machine learning'"
+        exit 1
+    fi
+    
+    local skill_dir="$SKILLS_DIR/$skill_id"
+    
+    # Check if skill is installed
+    if [ ! -d "$skill_dir" ]; then
+        print_red "Skill not installed: $skill_id"
+        print_yellow "Run 'hermes-link install $skill_id' to install it"
+        exit 1
+    fi
+    
+    # Look for executable scripts in skill directory
+    local exec_script=""
+    if [ -f "$skill_dir/run.sh" ]; then
+        exec_script="$skill_dir/run.sh"
+    elif [ -f "$skill_dir/$skill_id.sh" ]; then
+        exec_script="$skill_dir/$skill_id.sh"
+    elif [ -f "$skill_dir/bin/run" ]; then
+        exec_script="$skill_dir/bin/run"
+    fi
+    
+    if [ -n "$exec_script" ] && [ -x "$exec_script" ]; then
+        print_blue "Running $skill_id task: $task"
+        "$exec_script" $task "$@"
+    else
+        # No executable found - show SKILL.md content for the task
+        print_blue "=== $skill_id: $task ==="
+        echo ""
+        if [ -f "$skill_dir/SKILL.md" ]; then
+            # Extract and display relevant section
+            awk -v t="$task" '
+                BEGIN { in_section=0 }
+                /^## / { in_section = (tolower($0) ~ tolower(t)) }
+                in_section { print }
+                /^## [^#]/ && in_section { exit }
+            ' "$skill_dir/SKILL.md" 2>/dev/null || cat "$skill_dir/SKILL.md"
+        else
+            print_red "No SKILL.md found for $skill_id"
+            exit 1
+        fi
+    fi
+}
+
 # Main command dispatcher
 case "$1" in
     list)
@@ -267,15 +324,20 @@ case "$1" in
     update)
         cmd_update
         ;;
+    run)
+        shift
+        cmd_run "$@"
+        ;;
     help|--help|-h)
         echo "hermes-link - Hermes Skill Marketplace"
         echo ""
         echo "Commands:"
         echo "  list                - List all available skills"
         echo "  search <query>      - Search skills by name/tag"
-        echo "  install <id>       - Install a skill"
-        echo "  uninstall <id>     - Uninstall a skill"
-        echo "  installed          - List installed skills"
+        echo "  install <id>        - Install a skill"
+        echo "  uninstall <id>      - Uninstall a skill"
+        echo "  run <id> <task>     - Execute a skill task"
+        echo "  installed           - List installed skills"
         echo "  info <id>           - Show skill details"
         echo "  update              - Check for updates"
         echo "  help                - Show this help"
@@ -284,6 +346,7 @@ case "$1" in
         echo "  hermes-link list"
         echo "  hermes-link search notion"
         echo "  hermes-link install notion-basic"
+        echo "  hermes-link run notion-basic search"
         ;;
     *)
         if [ -z "$1" ]; then
