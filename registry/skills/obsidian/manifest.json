@@ -1,0 +1,14 @@
+{
+  "name": "obsidian",
+  "description": "Read, search, and create notes in an Obsidian vault. Query your knowledge base, create pages, and manage your second brain from the terminal.",
+  "version": "1.0.0",
+  "author": "joyboy257",
+  "category": "note-taking",
+  "tags": ["obsidian", "notes", "knowledge-base", "markdown", "zettelkasten"],
+  "source_repo": "github.com/joyboy257/hermes-link",
+  "install_command": "pip install obsidian-cli 2>/dev/null || echo 'Uses Obsidian REST API plugin'",
+  "skill_md_path": "note-taking/obsidian/SKILL.md",
+  "prerequisites": {
+    "env_vars": ["OBSIDIAN_VAULT_PATH"]
+  }
+}

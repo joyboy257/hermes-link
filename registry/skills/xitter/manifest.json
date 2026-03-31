@@ -1,0 +1,14 @@
+{
+  "name": "xitter",
+  "description": "Interact with X/Twitter via the x-cli terminal client using official X API credentials. Post, read timelines, search, like, retweet, bookmarks, mentions, and user lookups.",
+  "version": "1.0.0",
+  "author": "joyboy257",
+  "category": "social-media",
+  "tags": ["twitter", "x", "social-media", "x-cli", "posting"],
+  "source_repo": "github.com/joyboy257/hermes-link",
+  "install_command": "uv tool install git+https://github.com/Infatoshi/x-cli.git",
+  "skill_md_path": "social-media/xitter/SKILL.md",
+  "prerequisites": {
+    "env_vars": ["X_API_KEY", "X_API_SECRET", "X_ACCESS_TOKEN", "X_ACCESS_SECRET"]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "excalidraw",
+  "description": "Generate hand-drawn style diagrams using Excalidraw JSON format. Create flowcharts, architecture diagrams, wireframes, and sketches programmatically.",
+  "version": "1.0.0",
+  "author": "joyboy257",
+  "category": "creative",
+  "tags": ["excalidraw", "diagrams", "architecture", "flowchart", "wireframe", "hand-drawn"],
+  "source_repo": "github.com/joyboy257/hermes-link",
+  "install_command": "pip install excalidraw-cli 2>/dev/null || npm install -g @excalidraw/excalidraw-cli",
+  "skill_md_path": "creative/excalidraw/SKILL.md",
+  "prerequisites": {
+    "env_vars": []
+  }
+}

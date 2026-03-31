@@ -1,0 +1,14 @@
+{
+  "name": "himalaya",
+  "description": "CLI to manage emails via IMAP/SMTP. List, read, send, compose, and manage email from the terminal with himalaya.",
+  "version": "1.0.0",
+  "author": "joyboy257",
+  "category": "email",
+  "tags": ["email", "imap", "smtp", "cli", "terminal"],
+  "source_repo": "github.com/joyboy257/hermes-link",
+  "install_command": "cargo install himalaya 2>/dev/null || pip install himalaya-email",
+  "skill_md_path": "email/himalaya/SKILL.md",
+  "prerequisites": {
+    "env_vars": []
+  }
+}

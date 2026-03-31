@@ -16,7 +16,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "uv tool install git+https://github.com/Infatoshi/x-cli.git",
-      "skill_md_path": "social-media/xitter/SKILL.md"
+      "skill_md_path": "registry/skills/xitter/SKILL.md"
     },
     {
       "name": "openhue",
@@ -32,7 +32,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "curl -sL https://github.com/openhue/openhue-cli/releases/latest/download/openhue-linux-amd64 -o ~/.local/bin/openhue && chmod +x ~/.local/bin/openhue",
-      "skill_md_path": "smart-home/openhue/SKILL.md"
+      "skill_md_path": "registry/skills/openhue/SKILL.md"
     },
     {
       "name": "pokemon-player",
@@ -81,7 +81,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "Set OBSIDIAN_VAULT_PATH in ~/.hermes/.env",
-      "skill_md_path": "note-taking/obsidian/SKILL.md"
+      "skill_md_path": "registry/skills/obsidian/SKILL.md"
     },
     {
       "name": "himalaya",
@@ -97,7 +97,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "curl -sSL https://raw.githubusercontent.com/pimalaya/himalaya/master/install.sh | PREFIX=~/.local sh",
-      "skill_md_path": "email/himalaya/SKILL.md"
+      "skill_md_path": "registry/skills/himalaya/SKILL.md"
     },
     {
       "name": "notion",
@@ -113,7 +113,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "Set NOTION_API_KEY in ~/.hermes/.env",
-      "skill_md_path": "productivity/notion/SKILL.md"
+      "skill_md_path": "registry/skills/notion/SKILL.md"
     },
     {
       "name": "stable-diffusion-image-generation",
@@ -168,7 +168,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "python3 ~/.hermes/skills/research/arxiv/scripts/search_arxiv.py",
-      "skill_md_path": "research/arxiv/SKILL.md"
+      "skill_md_path": "registry/skills/arxiv/SKILL.md"
     },
     {
       "name": "excalidraw",
@@ -185,7 +185,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "pip install cryptography",
-      "skill_md_path": "creative/excalidraw/SKILL.md"
+      "skill_md_path": "registry/skills/excalidraw/SKILL.md"
     },
     {
       "name": "github-code-review",
@@ -201,7 +201,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "gh auth login",
-      "skill_md_path": "github/github-code-review/SKILL.md"
+      "skill_md_path": "registry/skills/github-code-review/SKILL.md"
     },
     {
       "name": "github-issues",
@@ -217,7 +217,7 @@
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
       "install_command": "gh auth login",
-      "skill_md_path": "github/github-issues/SKILL.md"
+      "skill_md_path": "registry/skills/github-issues/SKILL.md"
     },
     {
       "name": "serving-llms-vllm",

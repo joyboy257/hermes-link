@@ -1,0 +1,14 @@
+{
+  "name": "arxiv",
+  "description": "Search and retrieve academic papers from arXiv using their free REST API. Find papers by keyword, author, or category, fetch abstracts and PDFs.",
+  "version": "1.0.0",
+  "author": "joyboy257",
+  "category": "research",
+  "tags": ["arxiv", "academic", "papers", "research", "ml", "cs"],
+  "source_repo": "github.com/joyboy257/hermes-link",
+  "install_command": "pip install arxiv-downloader 2>/dev/null || echo 'No install needed - uses arXiv API directly'",
+  "skill_md_path": "research/arxiv/SKILL.md",
+  "prerequisites": {
+    "env_vars": []
+  }
+}

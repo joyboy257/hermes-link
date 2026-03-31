@@ -111,9 +111,30 @@ def install(name: str, force: bool = False, dry_run: bool = False) -> tuple[bool
         if install_path.exists():
             shutil.rmtree(install_path, ignore_errors=True)
 
-    # Execute install command
-    if install_cmd:
-        # Detect command type and run
+    # Instruction-only install commands — don't execute, just git sparse-clone the SKILL.md
+    no_exec = (
+        not install_cmd
+        or install_cmd.startswith("echo")
+        or install_cmd.startswith("print")
+        or install_cmd.startswith("Set ")
+        or install_cmd.startswith("set ")
+        or install_cmd.startswith("Add ")
+        or install_cmd.startswith("Configure ")
+        or "No install needed" in install_cmd
+        or "no-install" in install_cmd.lower()
+    )
+
+    if no_exec and skill_path:
+        # Instruction-only: git sparse-clone the SKILL.md
+        source = skill.get("source_repo", "")
+        if source:
+            success, msg = _install_git_sparse(name, source, skill_path, install_path)
+        else:
+            success, msg = False, "No install_command and no source_repo."
+        if not success:
+            return False, msg
+    elif install_cmd:
+        # Real install command — execute it
         if "uv tool install git+" in install_cmd or "pip install git+" in install_cmd:
             success, msg = _install_git_tool(name, install_cmd, install_path)
         elif install_cmd.startswith("curl") or install_cmd.startswith("wget"):
@@ -121,25 +142,13 @@ def install(name: str, force: bool = False, dry_run: bool = False) -> tuple[bool
         elif "npm install -g" in install_cmd or "pip install" in install_cmd:
             success, msg = _install_tool(name, install_cmd, install_path)
         else:
-            # Generic shell command
             code, stdout, stderr = _sh(install_cmd)
             if code != 0:
                 success, msg = False, f"Install command failed: {stderr or stdout}"
             else:
                 success, msg = True, stdout.strip() or f"Ran: {install_cmd}"
-
         if not success:
             return False, msg
-
-    else:
-        # No install_command — try git sparse-clone from source_repo
-        source = skill.get("source_repo", "")
-        if source:
-            success, msg = _install_git_sparse(name, source, skill_path, install_path)
-            if not success:
-                return False, msg
-        else:
-            return False, "No install_command and no source_repo — don't know how to install."
 
     # Save install record
     record = {
@@ -204,15 +213,13 @@ def _install_tool(name: str, cmd: str, install_path: Path) -> tuple[bool, str]:
 
 def _install_git_sparse(name: str, source_repo: str, skill_path: str, install_path: Path) -> tuple[bool, str]:
     """Sparse clone a skill directory from a git repo."""
-    # Convert github.com/owner/repo to git URL
+    # Normalize source_repo to a git URL
     if source_repo.startswith("github.com/"):
-        git_url = f"https://{source_repo}.git"
+        repo_url = f"https://{source_repo}.git"
     elif source_repo.startswith("git@"):
-        git_url = source_repo
+        repo_url = source_repo
     else:
-        git_url = source_repo
-
-    repo_url = git_url if git_url.startswith("git@") else f"https://{git_url}"
+        repo_url = source_repo  # already a full URL
 
     tmp = TEMP_DIR / f"install-{name}"
     if tmp.exists():

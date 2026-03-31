@@ -1,0 +1,14 @@
+{
+  "name": "github-issues",
+  "description": "Create, manage, triage, and close GitHub issues. Search existing issues, bulk update labels, and automate issue workflows.",
+  "version": "1.0.0",
+  "author": "joyboy257",
+  "category": "github",
+  "tags": ["github", "issues", "project-management", "bug-tracking", "triage"],
+  "source_repo": "github.com/joyboy257/hermes-link",
+  "install_command": "pip install gh 2>/dev/null || echo 'Uses GitHub CLI (gh)'",
+  "skill_md_path": "github/github-issues/SKILL.md",
+  "prerequisites": {
+    "env_vars": ["GITHUB_TOKEN"]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "notion",
+  "description": "Notion API for creating and managing pages, databases, and blocks via curl. Search, create, update, and query Notion workspaces directly from the terminal.",
+  "version": "1.0.0",
+  "author": "joyboy257",
+  "category": "productivity",
+  "tags": ["notion", "productivity", "notes", "database", "api"],
+  "source_repo": "github.com/joyboy257/hermes-link",
+  "install_command": "echo 'No install needed - uses Notion API directly'",
+  "skill_md_path": "productivity/notion/SKILL.md",
+  "prerequisites": {
+    "env_vars": ["NOTION_API_KEY"]
+  }
+}

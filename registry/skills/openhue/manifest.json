@@ -1,0 +1,14 @@
+{
+  "name": "openhue",
+  "description": "Control Philips Hue lights, rooms, and scenes via the OpenHue CLI. Turn lights on/off, adjust brightness, color, color temperature, and activate scenes.",
+  "version": "1.0.0",
+  "author": "joyboy257",
+  "category": "smart-home",
+  "tags": ["smart-home", "hue", "lights", "iot", "automation", "philips-hue"],
+  "source_repo": "github.com/joyboy257/hermes-link",
+  "install_command": "curl -sL https://github.com/openhue/openhue-cli/releases/latest/download/openhue-linux-amd64 -o ~/.local/bin/openhue && chmod +x ~/.local/bin/openhue",
+  "skill_md_path": "smart-home/openhue/SKILL.md",
+  "prerequisites": {
+    "env_vars": ["HUE_BRIDGE_IP", "HUE_API_KEY"]
+  }
+}
