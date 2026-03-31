@@ -74,10 +74,14 @@ def install(name: str, force: bool = False, dry_run: bool = False) -> tuple[bool
     category = skill.get("category", "other")
     version = skill.get("version", "1.0.0")
 
-    # Resolve install path: skill_md_path is like "productivity/notion/SKILL.md"
-    # The skill dir is the parent of the SKILL.md
-    if skill_path:
-        skill_dir = Path(skill_path).parent  # "productivity/notion"
+    # Resolve install path.
+    # skill_md_path is like "registry/skills/notion/SKILL.md" or "productivity/notion/SKILL.md"
+    # We strip the "registry/skills/" prefix and use the remainder as the category/name path.
+    skill_dir = Path(skill_path).parent  # e.g. "registry/skills/notion"
+    if skill_dir.parts[0] == "registry" and len(skill_dir.parts) > 2:
+        # Strip "registry/skills/<name>" → use just "<name>"
+        # But preserve the real category if it's not nested under registry/skills
+        skill_dir = Path(skill_dir.parts[-1])  # just the skill name dir
     else:
         skill_dir = Path(category) / name
 
@@ -204,11 +208,20 @@ def _install_curl_script(name: str, cmd: str, install_path: Path) -> tuple[bool,
 
 
 def _install_tool(name: str, cmd: str, install_path: Path) -> tuple[bool, str]:
-    """Run npm/pip install command."""
+    """Run npm/pip install command. Retries with --break-system-packages on PEP 668 failure."""
     code, stdout, stderr = _sh(cmd)
     if code != 0:
+        # PEP 668: try with --break-system-packages
+        if "externally-managed-environment" in stderr or "externally managed" in stdout:
+            # Replace bare pip with pip --break-system-packages
+            fixed = cmd.replace("pip install", "pip install --break-system-packages")
+            fixed = fixed.replace("pip3 install", "pip3 install --break-system-packages")
+            code2, stdout2, stderr2 = _sh(fixed)
+            if code2 != 0:
+                return False, f"Install failed (also with --break-system-packages): {stderr2 or stdout2}"
+            return True, stdout2.strip() or f"Installed {name} (--break-system-packages)"
         return False, f"Install failed: {stderr or stdout}"
-    return True, stdout or f"Installed {name}"
+    return True, stdout.strip() or f"Installed {name}"
 
 
 def _install_git_sparse(name: str, source_repo: str, skill_path: str, install_path: Path) -> tuple[bool, str]:

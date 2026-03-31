@@ -200,7 +200,7 @@
       ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
-      "install_command": "gh auth login",
+      "install_command": "echo \"GitHub CLI (gh) must be installed and authenticated. Run: gh auth login\"",
       "skill_md_path": "registry/skills/github-code-review/SKILL.md"
     },
     {
@@ -216,7 +216,7 @@
       ],
       "author": "joyboy257",
       "source_repo": "github.com/joyboy257/hermes-link",
-      "install_command": "gh auth login",
+      "install_command": "echo \"GitHub CLI (gh) must be installed and authenticated. Run: gh auth login\"",
       "skill_md_path": "registry/skills/github-issues/SKILL.md"
     },
     {
