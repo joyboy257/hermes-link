@@ -97,14 +97,23 @@ def install(name: str, force: bool = False, dry_run: bool = False) -> tuple[bool
             lines.append(f"  Env vars:   {', '.join(env_vars)}")
         return True, "\n".join(lines)
 
-    # Clean up existing
+    # Pre-clean on force (regardless of prior install status)
+    if force and install_cmd:
+        import re as _re
+        clone_match = _re.search(r"clone\s+[^\s]+\s+(~/[^\s]+)", install_cmd)
+        if clone_match:
+            dest = Path(clone_match.group(1).replace("~", str(Path.home())))
+            if dest.exists():
+                shutil.rmtree(dest, ignore_errors=True)
+
+    # Clean up existing tracked install
     if is_inst and force:
         if install_path.exists():
             shutil.rmtree(install_path, ignore_errors=True)
 
     # Execute install command
     if install_cmd:
-        # Detect command type
+        # Detect command type and run
         if "uv tool install git+" in install_cmd or "pip install git+" in install_cmd:
             success, msg = _install_git_tool(name, install_cmd, install_path)
         elif install_cmd.startswith("curl") or install_cmd.startswith("wget"):
@@ -115,9 +124,9 @@ def install(name: str, force: bool = False, dry_run: bool = False) -> tuple[bool
             # Generic shell command
             code, stdout, stderr = _sh(install_cmd)
             if code != 0:
-                return False, f"Install command failed: {stderr or stdout}"
-            success, True
-            msg = stdout or f"Ran: {install_cmd}"
+                success, msg = False, f"Install command failed: {stderr or stdout}"
+            else:
+                success, msg = True, stdout.strip() or f"Ran: {install_cmd}"
 
         if not success:
             return False, msg
@@ -147,11 +156,20 @@ def install(name: str, force: bool = False, dry_run: bool = False) -> tuple[bool
 
 
 def _install_git_tool(name: str, cmd: str, install_path: Path) -> tuple[bool, str]:
-    """Run a uv/pip tool install from git."""
+    """Run a uv/pip tool install from git. Handles existing destination paths."""
+    # Extract destination from command: "git clone https://... ~/.agent-skills/hamelnb"
+    # or "uv tool install ..."
+    import re as _re
+    dest_match = _re.search(r"(?:clone|install).*?([^\s\"']*~/[^\s\"']+)", cmd)
+    if dest_match:
+        dest = Path(dest_match.group(1).replace("~", str(Path.home())))
+        if dest.exists():
+            shutil.rmtree(dest, ignore_errors=True)
+
     code, stdout, stderr = _sh(cmd)
     if code != 0:
         return False, f"Install failed: {stderr or stdout}"
-    return True, stdout or f"Installed {name} via {cmd.strip()}"
+    return True, stdout.strip() or f"Installed {name}"
 
 
 def _install_curl_script(name: str, cmd: str, install_path: Path) -> tuple[bool, str]:
