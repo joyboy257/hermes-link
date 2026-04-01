@@ -24,7 +24,9 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "python-telegram-bot>=20.0",
+]
 
 [project.scripts]
 hermes-link = "hermes_link.cli:main"
@@ -36,4 +38,4 @@ Issues = "https://github.com/joyboy257/hermes-link/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["hermes_link*"]
+include = ["hermes_link*", "hermes_link.telegram_bot*"]

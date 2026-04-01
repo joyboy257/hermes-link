@@ -125,7 +125,13 @@ hermes-link/
 │   ├── cli.py          # argparse, commands
 │   ├── registry.py    # fetch/parse index.json
 │   ├── installer.py   # git sparse-clone, file ops
-│   └── format.py       # table formatting
+│   ├── format.py       # table formatting
+│   └── telegram_bot/   # Telegram bot — /market commands
+│       ├── __init__.py
+│       ├── bot.py     # python-telegram-bot Application setup
+│       ├── commands.py # /market dispatch + handlers
+│       ├── formatters.py # Telegram-friendly output
+│       └── main.py    # entry point
 ├── hermes_link.egg-info/
 ├── pyproject.toml
 ├── SPEC.md
@@ -180,13 +186,13 @@ Each skill lives at `registry/skills/<skill-id>/` with:
 - Registry JSON with 10+ seed skills
 - Working install/uninstall of skills
 - GitHub Pages hosting of registry
+- Telegram bot (`/market list|search|info|install|installed|uninstall|help`)
 
 **Out of scope (defer to Phase 2+):**
 - Web dashboard
 - User accounts / auth
 - Ratings / reviews
 - Premium / paid skills
-- In-chat `/market` commands (Hermes integration)
 - API server
 - Search analytics
 
