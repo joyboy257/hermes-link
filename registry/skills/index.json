@@ -60,6 +60,18 @@
     "downloads": 312
   },
   {
+    "id": "hermes-tweet",
+    "name": "Hermes Tweet",
+    "description": "Hermes Agent X/Twitter plugin for Xquik tweet search, reply reading, user lookup, follower export, monitoring, posting, replies, and DMs.",
+    "version": "0.1.6",
+    "category": "social-media",
+    "tags": ["twitter", "x", "social-media", "hermes-agent", "xquik"],
+    "pricing": "free",
+    "author": "Xquik",
+    "rating": 4.3,
+    "downloads": 0
+  },
+  {
     "id": "github-workflow",
     "name": "GitHub Workflow",
     "description": "Full GitHub workflow — issues, PRs, repos, actions.",

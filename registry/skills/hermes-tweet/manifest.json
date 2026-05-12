@@ -1,0 +1,27 @@
+{
+  "name": "hermes-tweet",
+  "description": "Native Hermes Agent X/Twitter plugin for Xquik. Search tweets, read replies, look up users, export followers, monitor tweets, and run approval-gated post, reply, and DM actions.",
+  "version": "0.1.6",
+  "author": "Xquik",
+  "category": "social-media",
+  "tags": [
+    "twitter",
+    "x",
+    "social-media",
+    "hermes-agent",
+    "xquik",
+    "monitoring",
+    "posting"
+  ],
+  "source_repo": "github.com/Xquik-dev/hermes-tweet",
+  "install_command": "hermes plugins install Xquik-dev/hermes-tweet --enable",
+  "skill_md_path": "registry/skills/hermes-tweet/SKILL.md",
+  "prerequisites": {
+    "env_vars": [
+      "XQUIK_API_KEY"
+    ],
+    "optional_env_vars": [
+      "HERMES_TWEET_ENABLE_ACTIONS"
+    ]
+  }
+}
