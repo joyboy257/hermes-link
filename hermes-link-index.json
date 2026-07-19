@@ -19,6 +19,24 @@
       "skill_md_path": "registry/skills/xitter/SKILL.md"
     },
     {
+      "name": "hermes-tweet",
+      "description": "Native Hermes Agent X/Twitter plugin for Xquik. Search tweets, read replies, look up users, export followers, monitor tweets, and run approval-gated post, reply, and DM actions. Not affiliated with X Corp.",
+      "category": "social-media",
+      "tags": [
+        "twitter",
+        "x",
+        "social-media",
+        "hermes-agent",
+        "xquik",
+        "monitoring",
+        "posting"
+      ],
+      "author": "Xquik",
+      "source_repo": "github.com/Xquik-dev/hermes-tweet",
+      "install_command": "hermes plugins install Xquik-dev/hermes-tweet --enable",
+      "skill_md_path": "registry/skills/hermes-tweet/SKILL.md"
+    },
+    {
       "name": "openhue",
       "description": "Control Philips Hue lights, rooms, and scenes via the OpenHue CLI. Turn lights on/off, adjust brightness, color, color temperature, and activate scenes.",
       "category": "smart-home",

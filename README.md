@@ -17,7 +17,7 @@ hermes-link installed               # List installed skills
 hermes-link update                  # Update all skills
 ```
 
-## Skills (18 available)
+## Skills (19 available)
 
 productivity | mlops | research | github | social-media | data-science | creative | gaming | smart-home | email | note-taking | leisure | custom | agentic-ai
 
@@ -52,7 +52,7 @@ hermes-link/
 
 ## Registry
 
-17+ skills and growing. Contributions welcome — open a PR with a new `hermes-link-index.json` entry and a SKILL.md.
+19 skills and growing. Contributions welcome - open a PR with a new `hermes-link-index.json` entry and a SKILL.md.
 
 ## Status
 
