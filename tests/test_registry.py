@@ -11,7 +11,10 @@ from hermes_link import registry
 
 
 class FetchIndexTests(unittest.TestCase):
+    """Verify online and offline registry cache decisions."""
+
     def setUp(self) -> None:
+        """Redirect registry cache writes into a temporary directory."""
         self.temporary_directory = tempfile.TemporaryDirectory()
         self.cache_file = Path(self.temporary_directory.name) / "index.json"
         self.cache_patch = patch.object(registry, "CACHE_FILE", self.cache_file)
@@ -22,14 +25,17 @@ class FetchIndexTests(unittest.TestCase):
         self.cache_directory_patch.start()
 
     def tearDown(self) -> None:
+        """Restore cache globals and remove temporary files."""
         self.cache_directory_patch.stop()
         self.cache_patch.stop()
         self.temporary_directory.cleanup()
 
     def write_cache(self, skills: list[dict]) -> None:
+        """Write a registry payload to the temporary cache."""
         self.cache_file.write_text(json.dumps({"skills": skills}))
 
     def test_fresh_cache_avoids_network_request(self) -> None:
+        """Return a fresh cache entry without requesting the network."""
         skills = [{"name": "cached"}]
         self.write_cache(skills)
 
@@ -40,6 +46,7 @@ class FetchIndexTests(unittest.TestCase):
         request.assert_not_called()
 
     def test_stale_cache_is_used_when_refresh_fails(self) -> None:
+        """Recover stale cache entries after a failed network refresh."""
         skills = [{"name": "offline"}]
         self.write_cache(skills)
         os.utime(self.cache_file, (0, 0))
@@ -53,6 +60,7 @@ class FetchIndexTests(unittest.TestCase):
         self.assertEqual(result, skills)
 
     def test_force_refresh_replaces_cache(self) -> None:
+        """Replace cache contents when a forced refresh succeeds."""
         self.write_cache([{"name": "old"}])
         fresh = {"skills": [{"name": "fresh"}]}
 
