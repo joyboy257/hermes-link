@@ -27,11 +27,12 @@ def _request(url: str, timeout: int = 15) -> dict | None:
 def fetch_index(force_refresh: bool = False) -> list[dict]:
     """Fetch the skill index. Falls back to cache on network failure."""
     cached = None
-    if not force_refresh and CACHE_FILE.exists():
+    if CACHE_FILE.exists():
         try:
             mtime = CACHE_FILE.stat().st_mtime
-            if time.time() - mtime < CACHE_TTL:
-                cached = json.loads(CACHE_FILE.read_text())
+            cached = json.loads(CACHE_FILE.read_text())
+            if not force_refresh and time.time() - mtime < CACHE_TTL:
+                return cached.get("skills", [])
         except (json.JSONDecodeError, OSError):
             pass
 

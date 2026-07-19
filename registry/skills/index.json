@@ -62,8 +62,8 @@
   {
     "id": "hermes-tweet",
     "name": "Hermes Tweet",
-    "description": "Hermes Agent X/Twitter plugin for Xquik tweet search, reply reading, user lookup, follower export, monitoring, posting, replies, and DMs.",
-    "version": "0.1.6",
+    "description": "Hermes Agent X/Twitter plugin for Xquik tweet search, reply reading, user lookup, follower export, monitoring, posting, replies, and DMs. Not affiliated with X Corp.",
+    "version": "0.1.8",
     "category": "social-media",
     "tags": ["twitter", "x", "social-media", "hermes-agent", "xquik"],
     "pricing": "free",

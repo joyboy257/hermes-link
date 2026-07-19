@@ -1,7 +1,7 @@
 {
   "name": "hermes-tweet",
-  "description": "Native Hermes Agent X/Twitter plugin for Xquik. Search tweets, read replies, look up users, export followers, monitor tweets, and run approval-gated post, reply, and DM actions.",
-  "version": "0.1.6",
+  "description": "Native Hermes Agent X/Twitter plugin for Xquik. Search tweets, read replies, look up users, export followers, monitor tweets, and run approval-gated post, reply, and DM actions. Not affiliated with X Corp.",
+  "version": "0.1.8",
   "author": "Xquik",
   "category": "social-media",
   "tags": [
@@ -21,6 +21,7 @@
       "XQUIK_API_KEY"
     ],
     "optional_env_vars": [
+      "XQUIK_BASE_URL",
       "HERMES_TWEET_ENABLE_ACTIONS"
     ]
   }

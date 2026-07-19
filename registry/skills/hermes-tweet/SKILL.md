@@ -1,7 +1,7 @@
 ---
 name: hermes-tweet
-description: Native Hermes Agent X/Twitter plugin for Xquik. Search tweets, read replies, look up users, export followers, monitor tweets, and run approval-gated post, reply, and DM actions.
-version: 0.1.6
+description: Native Hermes Agent X/Twitter plugin for Xquik. Search tweets, read replies, look up users, export followers, monitor tweets, and run approval-gated post, reply, and DM actions. Not affiliated with X Corp.
+version: 0.1.8
 author: Xquik
 license: MIT
 prerequisites:
@@ -14,7 +14,7 @@ metadata:
 
 # Hermes Tweet
 
-Native Hermes Agent plugin for X/Twitter automation through Xquik.
+Native Hermes Agent plugin for X/Twitter automation through Xquik. Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
 
 Use this skill when a Hermes Agent user asks to search Twitter/X, scrape or
 search tweets, read tweet replies, look up users, export followers, monitor
